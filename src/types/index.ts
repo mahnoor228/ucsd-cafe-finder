@@ -1,0 +1,9 @@
+export type Point = {lat:number;lng:number};
+export type OriginMode = 'campus'|'me'|'custom';
+export type SortBy = 'distance'|'rating'|'reviews'|'name';
+export type TravelMode = 'WALKING'|'BICYCLING'|'TRANSIT'|'DRIVING';
+export type Cafe = {id:string;name:string;location:Point;address?:string;rating?:number;reviewCount?:number;price?:string;open?:boolean;closingTime?:string;photo?:string;photos?:string[];website?:string;phone?:string;mapsUrl?:string;types?:string[];hours?:string[];reviews?:Review[];amenities?:Record<string,boolean|undefined>;businessStatus?:string;source:'google'|'directory';onCampus?:boolean};
+export type Review = {author:string;rating:number;text:string;time?:string;avatar?:string;url?:string};
+export type Filters = {open:boolean;rating:number;price:string;outdoor:boolean;vegetarian:boolean;study:boolean;dineIn:boolean;takeout:boolean;campus:boolean};
+export const DEFAULT_FILTERS:Filters = {open:false,rating:0,price:'any',outdoor:false,vegetarian:false,study:false,dineIn:false,takeout:false,campus:false};
+export const CAMPUS:Point={lat:32.8801,lng:-117.2340};
