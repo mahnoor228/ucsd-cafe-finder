@@ -3,7 +3,10 @@ import type {Cafe,Point,Review} from '../types';
 import {miles,campusApprox} from '../utils/geo';
 let initialized=false;
 export const configured=Boolean(import.meta.env.VITE_GOOGLE_MAPS_API_KEY?.trim());
-export async function loadGoogle(){if(!configured)throw new Error('Live Google Maps is not configured.');if(!initialized){setOptions({key:import.meta.env.VITE_GOOGLE_MAPS_API_KEY,v:'weekly'});initialized=true;}const [maps,places,marker]=await Promise.all([importLibrary('maps'),importLibrary('places'),importLibrary('marker')]);return {maps,places,marker};}
+export async function loadGoogle(){if(!configured)throw new Error('Live Google Maps is not configured.');if(!initialized){setOptions({key:import.meta.env.VITE_GOOGLE_MAPS_API_KEY,v:'weekly'});initialized=true;}
+// The loader never settles if the Maps script can't load (e.g. blocked
+// network), so time out instead of leaving the app waiting on live data.
+let timer:ReturnType<typeof setTimeout>|undefined;try{const [maps,places,marker]=await Promise.race([Promise.all([importLibrary('maps'),importLibrary('places'),importLibrary('marker')]),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('Google Maps took too long to load.')),10000);})]);return {maps,places,marker};}finally{clearTimeout(timer);}}
 const baseFields=['id','displayName','location','formattedAddress','rating','userRatingCount','priceLevel','businessStatus','regularOpeningHours','photos','googleMapsURI','types','currentOpeningHours'];
 const detailFields=['id','displayName','location','formattedAddress','rating','userRatingCount','priceLevel','businessStatus','regularOpeningHours','currentOpeningHours','photos','googleMapsURI','types','websiteURI','nationalPhoneNumber','reviews','outdoorSeating','servesVegetarianFood','dineIn','takeout','delivery'];
 async function toCafe(p:google.maps.places.Place):Promise<Cafe|null>{
