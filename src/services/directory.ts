@@ -1,4 +1,5 @@
 import type {Cafe} from '../types';
+import {campusApprox} from '../utils/geo';
 // A clearly labelled, offline discovery directory. Locations are approximate and are NOT live Google data.
 // Live Google Places results replace matching directory entries when configured.
 // List verified 2026-11-19 against web listings and geocoding: UCSD campus,
@@ -61,4 +62,4 @@ const entries:Cafe[]=[
 {id:'dir-pinpoint-element',name:'Pinpoint Café — UTC',location:{lat:32.86984,lng:-117.22759},address:'8899 University Center Ln, San Diego, CA 92122',source:'directory'},
 {id:'dir-peets-utc',name:"Peet's Coffee — UTC",location:{lat:32.86746,lng:-117.2068},address:'8905 Towne Centre Dr, San Diego, CA 92122',source:'directory'}
 ];
-export const directory:Cafe[]=entries.map(c=>({...c,onCampus:c.location.lat>=32.876&&c.location.lng<=-117.23}));
+export const directory:Cafe[]=entries.map(c=>({...c,onCampus:campusApprox(c.location)}));
