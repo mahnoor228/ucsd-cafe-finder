@@ -1,6 +1,9 @@
 import type {Point} from '../types';
 export function miles(a:Point,b:Point){const r=3958.7613,rad=Math.PI/180,dlat=(b.lat-a.lat)*rad,dlng=(b.lng-a.lng)*rad;const x=Math.sin(dlat/2)**2+Math.cos(a.lat*rad)*Math.cos(b.lat*rad)*Math.sin(dlng/2)**2;return 2*r*Math.asin(Math.min(1,Math.sqrt(x)));}
 export function walkMinutes(mi:number){return Math.max(1,Math.round(mi/3*60));}
+// Noun for a routed duration on a cafe card, e.g. "12 mins walk" once a real
+// route exists; the "~N min walk*" estimate is shown until then.
+export function modeNoun(mode:string){return ({WALKING:'walk',BICYCLING:'bike',TRANSIT:'transit',DRIVING:'drive'} as Record<string,string>)[mode]||'walk';}
 // Main UCSD campus outline, simplified from the OpenStreetMap UCSD boundary
 // (way 25822522, via Nominatim): Torrey Pines Rd north, N Torrey Pines Rd
 // west, Gilman Dr east (with the VA hospital notch), La Jolla Village Dr
