@@ -13,3 +13,8 @@ const CAMPUS_POLYGON:[number,number][]=[[32.8941,-117.2415],[32.8940,-117.2431],
 export function campusApprox(p:Point){let inside=false;for(let i=0,j=CAMPUS_POLYGON.length-1;i<CAMPUS_POLYGON.length;j=i++){const [aLat,aLng]=CAMPUS_POLYGON[i],[bLat,bLng]=CAMPUS_POLYGON[j];if((aLat>p.lat)!==(bLat>p.lat)&&p.lng<(bLng-aLng)*(p.lat-aLat)/(bLat-aLat)+aLng)inside=!inside;}return inside;}
 export function mapsDirections(c:Point,origin:Point,mode:string){const o=`${origin.lat},${origin.lng}`,d=`${c.lat},${c.lng}`;return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(o)}&destination=${encodeURIComponent(d)}&travelmode=${mode.toLowerCase()}`;}
 export function priceLabel(v?:string){if(!v)return 'Price unavailable';return ({PRICE_LEVEL_FREE:'Free',PRICE_LEVEL_INEXPENSIVE:'$',PRICE_LEVEL_MODERATE:'$$',PRICE_LEVEL_EXPENSIVE:'$$$',PRICE_LEVEL_VERY_EXPENSIVE:'$$$$'} as Record<string,string>)[v]||v;}
+// Review-count formatting (issue #8): the exact count from Places, with
+// locale separators and singular/plural. No star breakdown — the Places
+// API does not provide rating distributions.
+export function formatCount(n:number){return n.toLocaleString('en-US');}
+export function reviewCountLabel(n?:number){const c=n??0;return `${formatCount(c)} review${c===1?'':'s'}`;}
